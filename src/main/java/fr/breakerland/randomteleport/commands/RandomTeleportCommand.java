@@ -30,12 +30,15 @@ public class RandomTeleportCommand implements CommandExecutor {
 		Player player = null;
 		World world = null;
 		boolean group = false;
+		boolean force = false;
 
 		if (sender instanceof Player)
 			player = (Player) sender;
 		else
 			for (String arg : args)
-				if (player == null)
+				if (!force && arg.equals("force"))
+					force = true;
+				else if (player == null)
 					player = Bukkit.getPlayer(arg);
 				else if (world == null)
 					world = Bukkit.getWorld(arg);
@@ -45,49 +48,56 @@ public class RandomTeleportCommand implements CommandExecutor {
 		if (player == null)
 			return false;
 
-		for (String priority : plugin.getTeleportPriority())
-			switch (priority) {
-			case "home":
-				if (plugin.useEssentials()) {
-					User user = plugin.getEssentials().getUser(player);
-					List<String> homes = user.getHomes();
-					if (homes.size() > 0)
-						try {
-							player.teleport(user.getHome(homes.get(0)));
-							break;
-						} catch (Exception e) {}
-				}
-			case "land":
-				if (plugin.useLands()) {
-					LandPlayer landPlayer = plugin.getLands().getLandPlayer(player.getUniqueId());
-					if (landPlayer.ownsLand()) {
-						Location landSpawn = landPlayer.getOwningLand().getSpawn();
-						if (landSpawn != null) {
-							player.teleport(landSpawn);
-							break;
+		if (force)
+			randomTeleport(sender, player, world, group);
+		else
+			for (String priority : plugin.getTeleportPriority())
+				switch (priority) {
+				case "home":
+					if (plugin.useEssentials()) {
+						User user = plugin.getEssentials().getUser(player);
+						List<String> homes = user.getHomes();
+						if (homes.size() > 0)
+							try {
+								player.teleport(user.getHome(homes.get(0)));
+								break;
+							} catch (Exception e) {}
+					}
+				case "land":
+					if (plugin.useLands()) {
+						LandPlayer landPlayer = plugin.getLands().getLandPlayer(player.getUniqueId());
+						if (landPlayer.ownsLand()) {
+							Location landSpawn = landPlayer.getOwningLand().getSpawn();
+							if (landSpawn != null) {
+								player.teleport(landSpawn);
+								break;
+							}
 						}
 					}
+				case "rtp":
+					randomTeleport(sender, player, world, group);
+					break;
 				}
-			case "rtp":
-				if (group)
-					if (leader != null && canGroupTeleport()) {
-						player.teleport(leader);
-						break;
-					} else {
-						leader = player;
-						lastLeader = System.currentTimeMillis();
-					}
-
-				if (world == null)
-					world = player.getWorld();
-
-				if (plugin.isDisabledWorld(world) && (world = plugin.getFallbackWorld()) == null)
-					Message.NO_WORLD.sendMessage(sender);
-				else
-					plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.getRandomTeleportCommand().replaceAll("%world%", world.getName()).replaceAll("%player%", player.getName()));;
-			}
 
 		return true;
+	}
+
+	private void randomTeleport(CommandSender sender, Player player, World world, boolean group) {
+		if (group)
+			if (leader != null && canGroupTeleport())
+				player.teleport(leader);
+			else {
+				leader = player;
+				lastLeader = System.currentTimeMillis();
+			}
+
+		if (world == null)
+			world = player.getWorld();
+
+		if (plugin.isDisabledWorld(world) && (world = plugin.getFallbackWorld()) == null)
+			Message.NO_WORLD.sendMessage(sender);
+		else
+			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.getRandomTeleportCommand().replaceAll("%world%", world.getName()).replaceAll("%player%", player.getName()));
 	}
 
 	private boolean canGroupTeleport() {
