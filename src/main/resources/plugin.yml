@@ -1,0 +1,21 @@
+name: RandomTeleport
+main: fr.breakerland.randomteleport.RandomTeleport
+api-version: 1.13
+version: 1.0
+description: Teleport randomly!
+author: LLIcocoman_Hrz
+softdepend: [Essentials, Lands]
+
+commands:
+  randomteleport:
+    aliases: [randomtp, rtp, wild]
+    description: Cancel the skip!
+    permission: randomteleport.command
+permissions:
+  randomteleport.command:
+   default: true
+   description: Allows to cancel skipping the night
+  randomteleport.*:
+   description: Wildcard permission
+   children:
+     randomteleport.command: true

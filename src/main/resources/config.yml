@@ -1,0 +1,7 @@
+maxTimeGroup: 20
+
+disabledWorlds: []
+
+fallbackWorld: ''
+
+teleportPriority: home, land, rtp

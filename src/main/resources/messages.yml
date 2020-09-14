@@ -1,0 +1,3 @@
+prefix: '&8[&6RandomTeleport&8]'
+noWorld: '%prefix% &cYou can''t teleport you in this world.'
+usage: ''
