@@ -15,6 +15,7 @@ import me.angeschossen.lands.api.integration.LandsIntegration;
 
 public class RandomTeleport extends JavaPlugin {
 	private int maxTimeGroup;
+	private String randomTeleportCommand;
 	private String[] teleportPriority;
 	private World fallbackWorld;
 	private Collection<String> disabledWorlds;
@@ -27,6 +28,7 @@ public class RandomTeleport extends JavaPlugin {
 
 		FileConfiguration config = getConfig();
 		maxTimeGroup = config.getInt("maxTimeGroup", 20);
+		randomTeleportCommand = config.getString("rtpCommand", "land wild %world% %player%");
 		teleportPriority = config.getString("teleportPriority", "home, land, rtp").trim().split(",");
 		fallbackWorld = getServer().getWorld(config.getString("fallbackWorld", getServer().getWorlds().get(0).getName()));
 		disabledWorlds = config.getStringList("disabledWorlds");
@@ -46,6 +48,10 @@ public class RandomTeleport extends JavaPlugin {
 
 	public int getMaxTimeGroup() {
 		return maxTimeGroup;
+	}
+
+	public String getRandomTeleportCommand() {
+		return randomTeleportCommand;
 	}
 
 	public World getFallbackWorld() {

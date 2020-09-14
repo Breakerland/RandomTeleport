@@ -5,3 +5,5 @@ disabledWorlds: []
 fallbackWorld: ''
 
 teleportPriority: home, land, rtp
+
+rtpCommand: 'land wild %world% %player%'

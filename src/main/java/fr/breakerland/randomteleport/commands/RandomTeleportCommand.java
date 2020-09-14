@@ -17,7 +17,6 @@ import fr.breakerland.randomteleport.configs.Message;
 import me.angeschossen.lands.api.player.LandPlayer;
 
 public class RandomTeleportCommand implements CommandExecutor {
-	private final static String LAND_WILD_COMMAND = "l wild %s %s";
 	private final RandomTeleport plugin;
 	private Player leader;
 	private Long lastLeader;
@@ -26,7 +25,6 @@ public class RandomTeleportCommand implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	// /rtp [player] (world) (grouped)
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		Player player = null;
@@ -86,7 +84,7 @@ public class RandomTeleportCommand implements CommandExecutor {
 				if (plugin.isDisabledWorld(world) && (world = plugin.getFallbackWorld()) == null)
 					Message.NO_WORLD.sendMessage(sender);
 				else
-					plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), String.format(LAND_WILD_COMMAND, world.getName(), player.getName()));
+					plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), plugin.getRandomTeleportCommand().replaceAll("%world%", world.getName()).replaceAll("%player%", player.getName()));;
 			}
 
 		return true;
