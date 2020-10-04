@@ -60,6 +60,8 @@ public class RandomTeleportCommand implements CommandExecutor {
 						if (homes.size() > 0)
 							try {
 								player.teleport(user.getHome(homes.get(0)));
+								if (sender.equals(player))
+									Message.NO_RTP.sendMessage(sender);
 								break;
 							} catch (Exception e) {}
 					}
@@ -70,6 +72,8 @@ public class RandomTeleportCommand implements CommandExecutor {
 							Location landSpawn = landPlayer.getOwningLand().getSpawn();
 							if (landSpawn != null) {
 								player.teleport(landSpawn);
+								if (sender.equals(player))
+									Message.NO_RTP.sendMessage(sender);
 								break;
 							}
 						}

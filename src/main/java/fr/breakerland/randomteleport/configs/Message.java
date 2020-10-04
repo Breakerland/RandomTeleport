@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 public enum Message {
-	PREFIX("prefix", "&8[&6RandomTeleport&8]"), USAGE("commandHelp", "%prefix% &cPlease use /%cmd% [player] (world)"), NO_WORLD("noWorld", "%prefix% &cYou can't teleport you in this world."), CONSOLE_HELP("mojangServerError", "|-\r\n" + "  &c       Authentification error\r\n" + "  &cMojang's servers are currently down, please retry later!");
+	PREFIX("prefix", "&8[&6RandomTeleport&8]"), USAGE("commandHelp", "%prefix% &cPlease use /%cmd% [player] (world)"), NO_WORLD("noWorld", "%prefix% &cYou can't teleport you in this world."), NO_RTP("noRTP", "&cLe RTP n'est utilisable que pour les nouveaux arrivants ! Tu peux toujours utiliser la perle du voyage au /mage");
 
 	private final String key;
 	private String message;
